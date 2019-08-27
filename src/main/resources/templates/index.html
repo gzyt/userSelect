@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>User Info</title>
+    <link rel="stylesheet" type="text/css" href="./table.css" />
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+
+<h2 style="text-align:center">员工信息查询</h2>
+<form id="form" action="##" method="post" style="text-align:center">
+    <p>用户IP
+        <input name="userinfo" type="text" id="userinfo" tabindex="1" size="15" />
+    </p>
+    <p>
+        用户工号
+        <input name="usercode" type="text" id="usercode" tabindex="1" size="15" />
+        <input type="button" value="查找" onclick="selectUser()">
+    </p>
+</form>
+    <table class="Modbus">
+        <thead>
+        <tr>
+            <th>usercode</th>
+            <th>username</th>
+            <th>department</th>
+        </tr>
+        </thead>
+        <tr>
+            <td id="item1"></td>
+            <td id="item2"></td>
+            <td id="item3"></td>
+        </tr>
+    </table>
+<script type="text/javascript">
+        function selectUser() {
+            <!--获取访问IP地址-->
+            var userIp = document.getElementById("userinfo").value;
+            <!--获取用户工号-->
+            var usercode = document.getElementById("usercode").value;
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                url: "http://"+userIp+"/userInfo",
+                data:{usercode:usercode},
+                success:function(result) {
+                    <!--接收后台返回的数据，渲染页面-->
+                    $("#item1").text(result.usercode);
+                    $("#item2").text(result.username);
+                    $("#item3").text(result.department);
+                    console.log(result);
+                },
+                error:function() {
+                    $("#item1").text("");
+                    $("#item2").text("");
+                    $("#item3").text("");
+                    alert("查询异常！");
+                }
+            });
+        }
+</script>
+</body>
+
+
+</html>
